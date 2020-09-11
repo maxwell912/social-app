@@ -1,0 +1,8 @@
+{% block content %}
+    <p>
+        Tags:
+        {% for tag in post.tags.all %}
+            <a class="global" href={% url 'posts:posts-filter' tag.title  'Tag' %}>#{{ tag.title }}</a>
+        {% endfor %}
+    </p>
+{% endblock %}

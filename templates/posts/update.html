@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <article>
+    <h1>Update post</h1>
+    <form action="" enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      {% include 'includes/form.html' %}
+      <button class="btn" type="submit">Submit</button>
+    </form>
+
+    {% for file in post.attachments.all %}
+        <p>
+            <a class="global" href="{% url 'files:get-file' file.id %}">{{ file.file.name }}</a>
+            <a class="btn" href="{% url 'files:delete-file' file.id %}">Delete</a>
+        </p>
+    {% endfor %}
+
+    <h3>Add tag</h3>
+    {% with tag_form as form %}
+        {% include 'tags/create.html' %}
+    {% endwith %}
+
+    {% for tag in post.tags.all %}
+        {{ tag.title }}
+    {% endfor %}
+    </article>
+{% endblock %}

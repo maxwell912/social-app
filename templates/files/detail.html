@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <a class="global" href="{{ file.file.url }}" download>Download file</a>
+    <p>
+        {% if file.is_image %}
+            <img src="{{ file.file.url }}">
+        {% endif %}
+    </p>
+{% endblock %}

@@ -1,0 +1,46 @@
+<nav class="navbar-fixed-top">
+<style>
+    .raz div {
+        float: right;
+        margin: 2px;
+    }
+</style>
+<div class="raz">
+    {% block content %}
+        {% if user.is_authenticated %}
+            <ul class="nav nav-link bg-light">
+
+                <div><a style="color: #ffffff; background: #dc7f82" href="/accounts/logout">Logout</a></div>
+                <la><a href="{% url 'posts:post-list' %}">Feed</a></la>
+                <a href="{% url 'posts:post-create' %}">Add a post</a>
+                <a href="{% url 'reports:report-list' %}">Reports</a>
+                <div><a href="{%  url 'posts:posts-filter' request.user 'Author' %}">My posts</a></div>
+                <div>
+                    <ul class="navbar-nav ml-auto nav-flex-icons">
+                    <li class="nav-item avatar">
+                        <a class="nav-link p-0" href="{% url 'users:profile' request.user.id %}">
+
+                                <img
+                                    {% if request.user.avatar %}
+                                        src="{{ request.user.avatar.url }}"
+                                    {% else %}
+                                        src="https://img2.freepng.ru/20180410/loe/kisspng-user-computer-icons-anonymity-head-5acc3add493958.2652966915233338532999.jpg"
+                                    {% endif %}
+                                        class="rounded-circle z-depth-0"
+                                        alt="avatar image" height="35">
+                        </a>
+                    </li>
+                </ul></div>
+                <div><p>{{ request.user.email }}</p></div>
+            </ul>
+        {% else %}
+                <div><a style="color: #ffffff" href="/accounts/login">Login</a></div>
+                <div><a style="color: #ffffff; background: #419c5f" href="/accounts/signup">Signup</a></div>
+                <p>You are not logged in</p>
+
+        {% endif %}
+    {% endblock %}
+</div>
+</nav>
+
+

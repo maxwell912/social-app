@@ -1,0 +1,42 @@
+name: pycamp-socialapp-dev
+namespace: pycamp-socialapp-dev
+serviceAccount: true
+
+# persistentVolume:
+#   storageClass: "efs"
+#   mountPath: /storage/
+#   accessModes: ReadWriteOnce
+#   storage: 1024Mi
+
+deployment:
+  # replicaCount: 1
+  # deployStrategyType: RollingUpdate | Recreate
+  forceDeploy: true
+  image:
+    repository: registry.saritasa.com/saritasa/python/pycamp/social-app:latest
+    pullPolicy: Always
+    imagePullSecrets:
+      - name: saritasa-gitlab-registry
+  env:
+  - name: APP_ENV
+    value: deploy
+  - name: VAULT_SECRET
+    value: https://vault.saritasa.io/v1/project/data/pycamp-socialapp-dev
+  - name: TEMPLATE_PATH
+    value: /app/config/settings/deploy.py.template
+
+  # healthCheck:
+  #   livenessProbePath: /
+  #   readinessProbePath: /
+  traefik:
+    port: 80
+    tls: saritasa-hosting.com
+    dns: socialapp.saritasa-hosting.com
+    forceSSL: true
+  resources:
+    limits:
+      cpu: 256m
+      memory: 512Mi
+    requests:
+      cpu: 0m
+      memory: 0Mi

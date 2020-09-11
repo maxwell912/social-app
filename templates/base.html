@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Unavida</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            height: 100%;
+            margin: 15px;
+            background-image: linear-gradient(#ffffff, #7dc8d2);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        article {
+            display: inherit;
+            border-bottom: 1px solid #2b8893;
+            margin-top: 15px;
+            margin-left: 20%;
+            margin-right: 20%;
+            padding: 5px;
+
+        }
+        html {
+            height: 100%;
+        }
+        a {
+            border-radius: 9px;
+            background: #2b8893;
+            display: inline-block;
+            padding: 5px 15px;
+            text-decoration: none;
+            color: white;
+        }
+        a:hover{
+            color: #7dc8d2;
+        }
+        font {
+            font-style: italic;
+        }
+        select{
+            padding: 1px 15px;
+        }
+        .comment {
+            border-left: 1px solid #0f4950;
+            padding: 5px 15px;
+
+        }
+        .post {
+            background: rgb(255, 255, 255, 0.7);
+            border: 1px solid #c0e7ee;
+            border-radius: 9px;
+            padding: 5px 15px;
+
+        }
+        .title
+        {
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+        .post_title
+        {
+            background: none;
+            color: #000000;
+            padding: 1px 2px;
+        }
+        .btn {
+            padding: 1px 15px;
+            background: #2b8893;
+            color: white;
+        }
+        .global {
+            background: none;
+            color: #2b8893;
+            padding: 1px 2px;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+
+    {% block extra_js %}{% endblock %}
+</head>
+  <body>
+    {% include 'navigation.html' %}
+
+    <section role="main">
+      {% block content %}{% endblock %}
+    </section>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <article>
+        <form action="{% url 'posts:post-create' %}" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {% include 'includes/form.html' %}
+            <button class="btn" type="submit">Create</button>
+        </form>
+    </article>
+{% endblock %}

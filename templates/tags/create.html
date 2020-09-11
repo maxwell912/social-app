@@ -1,0 +1,8 @@
+{% block content %}
+    <form method="post">
+      {% csrf_token %}
+        {{ form }}
+        <button class="btn" type="submit" formaction="{% url 'tags:add' post.id %}">Add tag</button>
+        <button class="btn" type="submit" formaction="{% url 'tags:delete' post.id %}">Delete tag</button>
+    </form>
+{% endblock %}

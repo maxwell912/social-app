@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <article>
+        <form action="." method="post" enctype="multipart/form-data">
+        <div data-id="{{ like_obj.id }}" data-type="article" data-action="bookmark" title="Избранное">
+            <span class="glyphicon glyphicon-star"></span>
+            <span data-count="bookmark">{{ like_obj.bookmark_count }}</span>
+             {% if result %}
+                 <p>Post added to favorites </p>
+             {% else %}
+                 <p>Post removed from favorites</p>
+             {% endif %}
+
+            <p>Favored by {{ count }} users</p>
+        </div>
+        </form>
+    </article>
+{% endblock %}

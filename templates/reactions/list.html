@@ -1,0 +1,12 @@
+{% block content %}
+    {% load static %}
+
+    Reactions:
+    {% for reaction, count in post.get_reaction_counter %}
+        <img src="{% static reaction %}">  {{ count }}
+    {% endfor %}
+
+    <div class="float-right">
+        {% include "reactions/create.html" with form=reaction_form %}
+    </div>
+{% endblock %}

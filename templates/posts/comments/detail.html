@@ -1,0 +1,9 @@
+{% block content %}
+
+    <header>
+        {{ comment.user }}
+    </header>
+    {{comment.description|linebreaks|truncatechars:100}}
+    <p><a href="{% url 'posts:post-detail' comment.id %}">Reply</a></p>
+
+{% endblock %}

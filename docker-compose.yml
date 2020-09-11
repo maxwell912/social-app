@@ -1,0 +1,43 @@
+version: '3.7'
+
+volumes:
+  ipython_history: {}
+
+services:
+  # Database
+  postgres:
+    image: mdillon/postgis:10
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  #Django backend
+  serv: &serv
+    build:
+      context: .
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/app
+    command: /app/manage.py runserver 0.0.0.0:80
+#    depends_on:
+#      - celery-worker
+#      - postgres
+#      - redis
+  # Redis
+  redis:
+    image: redis:6.0
+    ports:
+      - "6379:6379"
+  # Celery worker running async task
+  celery-worker:
+    <<: *serv
+    command: celery worker --app config.celery:app -l info
+    ports: []
+  # Celery schedulerm
+  celery-beat:
+    <<: *serv
+    command: celery beat --app config.celery:app -l info
+    ports: []

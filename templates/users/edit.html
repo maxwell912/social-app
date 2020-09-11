@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Edit your account{% endblock %}
+
+{% block content %}
+    <article>
+    <h1>Edit your account</h1>
+    <p>You can edit your account using the following form:</p>
+    <form action="." method="post" enctype="multipart/form-data">
+    {% for attr in form %}
+        {% if attr.label != "Password"  %}
+            <p>{{  attr.label }}: {{ attr }}</p>
+        {% endif %}
+          {% endfor %}
+
+        <p><button class="btn" type="submit">Save changes</button></p>
+    {% csrf_token %}
+    </form>
+    </article>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% include 'includes/form.html' %}
+        <button class="btn" type="submit" formaction="{% url 'reactions:create' post.id %}">React</button>
+        <button class="btn" type="submit" formaction="{% url 'reactions:delete' post.id %}">Delete</button>
+    </form>
+{% endblock %}

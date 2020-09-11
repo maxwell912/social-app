@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block extra_js %}
+<script>
+/**
+* Set 'filter' form action by attributes and then remove them
+*/
+function setFormAction(){
+    let substring = document.getElementsByName("substring")[0]
+    let attr = document.getElementsByName("attr")[0]
+
+    const form = document.getElementById('filter');
+
+    form.action = `{% url 'posts:post-list' %}${substring.value}/${attr.value}`
+
+    substring.remove()
+    attr.remove()
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tit div {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tit">
+<h1 class="title">Last posts</h1>
+
+    <form id = "filter" class="title" onsubmit="setFormAction()">
+    <input name="substring" class="empty-form">
+
+        <select name="attr">
+          {% for attr in filter_attrs %}
+            <option>{{ attr }}</option>
+          {% endfor %}
+        </select>
+
+    <button class="btn" type="submit">Search</button>
+    </form>
+
+  {% for post in posts %}
+    {% include 'posts/short_post.html' %}
+  {% endfor %}
+
+  <article>
+      {% include 'pagination.html' %}
+  </article>
+
+</div>
+{% endblock %}

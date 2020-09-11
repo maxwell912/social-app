@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="{% url 'reports:report-create' post_id %}" method="post">
+      {% csrf_token %}
+
+      {% include 'includes/form.html' %}
+
+      <button class="btn" type="submit">Submit</button>
+    </form>
+{% endblock %}

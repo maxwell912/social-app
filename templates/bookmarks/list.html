@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <h1 align="center">Favorite posts</h1>
+        {% for post in bookmarks %}
+            <article>
+            <header>
+                <h2>
+                    <a class="post_title" href="{% url 'posts:post-detail' post.id %}">{{ post.title }}</a>
+                </h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <p><button class="btn" formaction="{% url 'bookmarks:delete-bookmark' post.id %}">Remove bookmark</button></p>
+                </form>
+            </header>
+            {% if is_editor %}
+               <p> <a href="{% url 'posts:post-update' post.id %}">Update</a></p>
+            {% endif %}
+
+            {{post.description|linebreaks|truncatechars:200}}
+
+            <p>{% include 'tags/list.html' %}</p>
+
+            <footer>
+                <p>Comments count: {{ post.comment_count }}</p>
+                <p>Reactions count: {{ post.reaction_count }}</p>
+                <em>created by
+                    <a class="post_title" href="{% url 'users:profile' post.user.id %}">{{post.user}}</a>
+                    at {{post.created_at}}
+                </em>
+            </footer>
+        </article>
+        {% endfor %}
+
+    {% include 'pagination.html' %}
+
+{% endblock %}

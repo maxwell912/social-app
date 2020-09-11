@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block extra_js %}
+    <script>
+    //Ask server if file is ready for download every 0.5s
+    //Download file when its ready
+    function getUrl(url){
+        fetch(url)
+            .then(response => {
+                if(response.status !== 200) {
+                    setTimeout(() => getUrl(url), 1000);
+                }
+                return response.json()
+            })
+            .then(data => {
+                const a = document.createElement('a');
+                document.body.appendChild(a);
+                a.style='display: none';
+                a.href=data.result_url;
+                a.download=data.result_url;
+                a.click();
+            })
+
+    }
+    //Create task and download on ready
+    function downloadReports(){
+        fetch("{% url 'reports:create-list-task' %}")
+          .then(response => response.json())
+          .then(data => getUrl(`/reports/list/result/${data.task_id}`));
+    }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+        <h1 align="center">Reports</h1>
+        {% if reports %}
+            <article>
+                <button onclick="downloadReports()" class="btn">Download Report (CSV)</button>
+            </article>
+        {% endif %}
+        {% for report in reports %}
+            <article>
+            <header>
+                <h1>{{ report.post.title }}</h1>
+                <a href="{% url 'posts:post-detail' report.post.id %}">Post</a>
+            </header>
+            {{report.get_reason_display}}
+            <footer>
+                <em>created by {{report.user}} at {{report.created_at}}</em>
+            </footer>
+            </article>
+              {% endfor %}
+
+
+        <article>
+            {% include 'pagination.html' %}
+        </article>
+
+{% endblock %}

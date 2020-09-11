@@ -1,0 +1,9 @@
+{% block content %}
+        <form action="{% url 'posts:add-comment' post.id %}" method="post">
+          {% csrf_token %}
+
+         {% include 'includes/form.html' %}
+
+          <button class="btn" type="submit">Comment</button>
+        </form>
+{% endblock %}

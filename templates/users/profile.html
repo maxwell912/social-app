@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <article>
+    <div class="raz">
+        {% if is_editor %}
+            <ul>
+                <div><a href="{% url 'users:edit' user.id %}">Edit</a></div>
+            </ul>
+        {% endif %}
+        <h1>Profile {{ user.username }}</h1>
+        {% if user.avatar %}
+            <img src="{{ user.avatar.url }}">
+        {% else %}
+            Нет картинки
+        {% endif %}
+        <p>Email: {{ user.email }}</p>
+        <p>First Name: {{ user.first_name }}</p>
+        <p>Last Name: {{ user.last_name }}</p>
+        <p>Phone: {{ user.phone_number }}</p>
+        <p>Gender: {{ user.gender }}</p>
+        <a href="{% url 'bookmarks:favorite' user.id %}">Favorite posts</a>
+    </div>
+
+    </article>
+
+{% endblock %}

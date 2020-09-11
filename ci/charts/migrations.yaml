@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrations
+  namespace: pycamp-socialapp-dev
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 300
+  activeDeadlineSeconds: 300
+  template:
+    spec: 
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: saritasa-gitlab-registry
+      serviceAccountName: pycamp-socialapp-dev
+      nodeSelector:
+        workload: job
+      containers:
+        - name: migrations
+          image: registry.saritasa.com/saritasa/python/pycamp/social-app:latest
+          imagePullPolicy: Always
+          env:
+          - name: APP_ENV
+            value: deploy
+          - name: VAULT_SECRET
+            value: https://vault.saritasa.io/v1/project/data/pycamp-socialapp-dev
+          - name: TEMPLATE_PATH
+            value: /app/config/settings/deploy.py.template
+          command:
+            - /etc/run-migrations.sh
+          resources:
+            limits:
+              cpu: 256m
+              memory: 512Mi
+            requests:
+              cpu: 0m
+              memory: 0Mi

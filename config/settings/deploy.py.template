@@ -1,0 +1,30 @@
+from .base import *
+
+DEBUG = True
+ENVIRONMENT = 'development'
+
+ALLOWED_HOSTS = [ '*' ]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': '{{$.DATABASE_NAME}}',
+        'USER': '{{$.DATABASE_USER}}',
+        'PASSWORD': '{{$.DATABASE_PASSWORD}}',
+        'HOST': '{{$.DATABASE_HOST}}',
+        'PORT': '{{$.DATABASE_PORT}}',
+    }
+}
+
+BROKER_TRANSPORT = '{{$.BROKER_TRANSPORT}}'
+BROKER_HOST = '{{$.BROKER_HOST}}'
+BROKER_PORT = '{{$.BROKER_PORT}}'
+
+CELERY_BROKER_URL = f'{BROKER_TRANSPORT}://{BROKER_HOST}:{BROKER_PORT}/0'
+CELERY_RESULT_BACKEND = f'{BROKER_TRANSPORT}://{BROKER_HOST}:{BROKER_PORT}/0'
+CELERY_BACKEND = f'{BROKER_TRANSPORT}://{BROKER_HOST}:{BROKER_PORT}/0'
+
+INSTALLED_APPS += (
+    'django_pdb',
+
+)

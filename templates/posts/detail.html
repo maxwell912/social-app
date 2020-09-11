@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block extra_js %}
+    <script>
+    //Ask server if file is ready for download every 0.5s
+    //Download file when its ready
+    function getUrl(url){
+        fetch(url)
+            .then(response => {
+                if(response.status !== 200) {
+                    setTimeout(() => getUrl(url), 10000);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const a = document.createElement('a');
+                document.body.appendChild(a);
+                a.style='display: none';
+                a.href=data.result_url;
+                a.download=data.result_url;
+                a.click();
+            })
+
+    }
+    //Create task and download on ready
+    function downloadReports(){
+        fetch("{% url 'posts:attachments-task' post.id %}")
+          .then(response => response.json())
+          .then(data => getUrl(`/posts/attachments/${data.task_id}`));
+    }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <article>
+    <div class="post">
+        {% if post.attachments.all %}
+                <p><button onclick="downloadReports()" class="float-right btn">Download attachments as zip</button></p>
+        {% endif %}
+        <header>
+        <h1>{{ post.title }}</h1>
+        </header>
+
+        <div class="float-right">
+            {% if can_report %}
+                <a href="{% url 'reports:report-create' post.id %}">Report</a>
+            {% endif %}
+
+
+
+            {% if is_author %}
+                <p><a  href="{% url 'posts:post-update' post.id %}">Edit</a></p>
+                <form action="{% url 'posts:post-delete' post.id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn">Delete</button>
+                </form>
+            {% endif %}
+        </div>
+        <p>{{post.description}}</p>
+
+        {% for file in post.attachments.all %}
+            {% if file.is_image %}
+                <img src="{{ file.file.url }}" height="450" class="center-block" >
+            {% endif %}
+            <p><a class="global" href="{% url 'files:get-file' file.id %}">{{ file.file.name }}</a></p>
+        {% endfor %}
+        {% include "reactions/list.html" %}
+
+        <p>{% include "tags/list.html" %} </p>
+
+        <div class="comment">
+            {% for comment in comment_page.object_list %}
+                {% include 'posts/comments/detail.html' %}
+            {% endfor %}
+        </div>
+
+            {% include 'pagination.html' with page_obj=comment_page %}
+    </div>
+
+    <h2>Comments</h2>
+
+    {% with comment_form as form %}
+        {% include 'posts/comments/create.html' %}
+    {% endwith %}
+
+    </article>
+{% endblock %}
